@@ -53,6 +53,11 @@ if __name__ == '__main__':
     sutime = SUTime(mark_time_ranges=True, include_range=True)
     print(json.dumps(sutime.parse(test_case), sort_keys=True, indent=4))
 ```
+sutime.parse():
+Text to be parsed should be passed into this function as the first parameter.
+A second paramater can be added to this function which will be a reference date.
+If no reference date is passed the reference date will be set to the default system date.
+
 
 Result:
 
@@ -65,6 +70,43 @@ Result:
         "timex-value": "2020-11-03",
         "type": "DATE",
         "value": "2020-11-03"
+    },
+    {
+        "end": 42,
+        "start": 27,
+        "text": "from 2pm to 3pm",
+        "type": "DURATION",
+        "value": {
+            "begin": "T14:00",
+            "end": "T15:00"
+        }
+    }
+]
+```
+## Example 2 - reference date example formatting
+
+```python
+import json
+from sutime import SUTime
+
+if __name__ == '__main__':
+    test_case = 'I need a desk for tomorrow from 2pm to 3pm'
+    ref_date = '2020-11-03'
+    sutime = SUTime(mark_time_ranges=True, include_range=True)
+    print(json.dumps(sutime.parse(test_case), sort_keys=True, indent=4))
+    result = sutime.parse(test_case, ref_date)
+    
+```
+
+```json
+[
+    {
+        "end": 26,
+        "start": 18,
+        "text": "tomorrow",
+        "timex-value": "2020-11-04",
+        "type": "DATE",
+        "value": "2020-11-04"
     },
     {
         "end": 42,
